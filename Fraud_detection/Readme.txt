@@ -1,8 +1,13 @@
-For this assignment, I was given two datasets contain transaction data.
-One is labelled (transaction_one_base.csv) and one is unlabelled (transaction_two)base.csv).
-Naturally, this corresponds to a training and test set of sorts.
-Since the only machine learning algorithm(s) we were allowed to use was k-means (and technically PCA, principal component analysis),
-the test set was more a way to create a full methodology.
+Full code, along with a more in-depth commentary, can be found in the ipython workbook.
 
-Further details can be found in the Word document, uploaded as part of the assignment (Lab3 Fraud Detection Report - Applied Data Science.docx)
-All code is in ADS Lab3.ipynb.
+This was a coursework set during my time studying data science at Bath, as part of the Applied Data Science module. The task was to take two sets of card transaction data – a training set and a test set - and identify fraudulent transactions within them. I found this coursework particularly interesting because it was least reliant on machine learning. Instead, it focussed almost entirely on data exploration and analysis.
+
+I studied 4 features of the data: transaction value, the merchant that received payment, the client that made the payment, and the time at which the transaction took place. I then used principle component analysis (PCA) to consolidate the transaction value, date and time data into two variables so that all transactions for a single client could be visualised and analysed by eye.
+
+When looking at the spread of transaction values across all data, I noticed that all transactions fit into one of three price bands. The low-price band includes values from 0 to 5700 (currency information was not included in the data set), the middle price band includes values from 5700 to 20000 and the high price band includes values from 20000 to 50000. The bands are clearly distinct in visualisations and presumably represent different kinds of shopping. I then discovered that 97.6% of clients make all of their transactions in a single price band and 100% of clients with fraudulent transactions had transactions in multiple price bands. I therefore looked for clients with transactions in multiple price bands as a filter.
+
+There were some noticeable patterns in other features, but I didn’t find them useful in conjunction with the filter mentioned above. However, when all of the transactions for a single client were processed by PCA, fraudulent transactions clearly stood out in visualisations.
+
+When the filter and the PCA visualisations were used in conjunction, I was able to identify the fraudulent transactions for the training set. The only case where the PCA visualisation did not seem definitive was in the case where a fraudulent transaction was one of three made by a client; PCA works best when there is an abundance of data and/or features to process. In this case, however, two of the transactions were in the low-price band and the third was in the high price band. Common sense told me that this was a case of suspicious behaviour, verified by the fraud flag.
+
+Since the method had worked on the training set, I applied it to the test set. As with the training set, I identified 8 clearly fraudulent transactions. Corroborating the above argument, I found one transaction that was clearly fraudulent by PCA visualisation but was also a single transaction in the high price band while all other transactions for the client were in the low-price band.
